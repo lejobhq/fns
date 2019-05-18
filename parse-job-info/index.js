@@ -3,7 +3,19 @@ const puppeteer = require("puppeteer");
 const parseStackOverflow = require("./parsers/stackoverflow");
 
 const parseJobInfo = (req, res) => {
-  if (!req.body || !req.body.url) {
+  // CORS
+  res.set("Access-Control-Allow-Origin", "https://lejobhq.appspot.com/");
+
+  if (req.method === "OPTIONS") {
+    res.set("Access-Control-Allow-Methods", "POST");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    res.set("Access-Control-Max-Age", "3600");
+    res.status(204);
+    res.send({});
+    return;
+  }
+
+  if (!req.body || !req.body.url || req.method !== "POST") {
     res.status(400);
     res.send({ error: "Bad Request" });
     return;

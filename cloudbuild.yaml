@@ -1,0 +1,14 @@
+steps:
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+  dir: 'parse-job-info'
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['test']
+  dir: 'parse-job-info'
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - functions
+  - deploy
+  - parseJobInfo
+  - --source=parse-job-info
+  - --trigger-http

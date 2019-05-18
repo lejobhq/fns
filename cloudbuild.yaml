@@ -9,6 +9,9 @@ steps:
   args:
   - functions
   - deploy
-  - parseJobInfo
+  - parse-job-info
   - --source=parse-job-info
+  - --entry-point=parseJobInfo
+  - --runtime=nodejs10
+  - --memory=1024MB
   - --trigger-http

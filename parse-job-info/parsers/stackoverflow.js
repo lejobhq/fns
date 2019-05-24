@@ -7,7 +7,7 @@ function parseStackOverflow(html) {
     .replace("  - Stack Overflow", "")
     .split(" at ");
   const logo = $(".job-details--header .s-avatar .hmx100.wmx100").attr("src");
-  const location = $(".fc-black-500")[0].innerText.replace("|", "").trim();
+  const location = $(".fc-black-500").eq(0).text().replace("|", "").trim();
   const visa = !!$(".-visa").length;
   const relocation = !!$(".-relocation").length;
   const experience = $(".job-details--about")

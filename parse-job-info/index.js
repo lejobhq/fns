@@ -30,12 +30,14 @@ const parseJobInfo = (req, res) => {
       .get(url)
       .then(html => {
         metadata = parseAngelList(html);
+
+        res.status(200);
+        res.send(metadata);
       })
       .catch(err => {
         console.error(err);
         res.status(500);
         res.send({ error: "Server Error" });
-        return;
       });
   } else {
     if (url.startsWith("https://stackoverflow.com/jobs/")) {
@@ -45,18 +47,17 @@ const parseJobInfo = (req, res) => {
         .then(page => page.goto(url).then(_ => page.content()))
         .then(html => {
           metadata = parseStackOverflow(html);
+
+          res.status(200);
+          res.send(metadata);
         })
         .catch(err => {
           console.error(err);
           res.status(500);
           res.send({ error: "Server Error" });
-          return;
         });
     }
   }
-
-  res.status(200);
-  res.send(metadata);
 };
 
 module.exports = { parseJobInfo };

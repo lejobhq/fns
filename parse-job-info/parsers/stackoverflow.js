@@ -27,6 +27,7 @@ function parseStackOverflow(html) {
   const technologies = $(".job-details__spaced .post-tag.job-link")
     .map((_, el) => $(el).text())
     .get();
+  const compensation = $(".-salary").eq(0).text();
 
   return {
     title,
@@ -37,7 +38,8 @@ function parseStackOverflow(html) {
     relocation,
     experience,
     company_size,
-    technologies
+    technologies,
+    compensation,
   };
 }
 

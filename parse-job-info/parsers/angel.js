@@ -4,7 +4,7 @@ function parseAngelList(html) {
   const $ = cheerio.load(html);
   const [title, company] = $("title")
     .text()
-    .replace("  | AngelList", "")
+    .replace(" | AngelList", "")
     .split(" at ");
   const logo = $(".hero-logo-wrapper .angel_image").attr("src");
   const location = $(".high-concept")

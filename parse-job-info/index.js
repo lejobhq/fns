@@ -1,3 +1,4 @@
+const cloudscraper = require("cloudscraper");
 const puppeteer = require("puppeteer");
 
 const parseStackOverflow = require("./parsers/stackoverflow");
@@ -24,24 +25,39 @@ const parseJobInfo = (req, res) => {
 
   const url = req.body.url;
   let metadata = {};
-  puppeteer
-    .launch({ args: ["--no-sandbox"] })
-    .then(browser => browser.newPage())
-    .then(page => page.goto(url).then(_ => page.content()))
-    .then(html => {
-      if (url.startsWith("https://stackoverflow.com/jobs/")) {
-        metadata = parseStackOverflow(html);
-      } else if (url.startsWith("https://angel.co/")) {
+  if (url.startsWith("https://angel.co/")) {
+    cloudscraper
+      .get(url)
+      .then(html => {
         metadata = parseAngelList(html);
-      }
-      res.status(200);
-      res.send(metadata);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500);
-      res.send({ error: "Server Error" });
-    });
+
+        res.status(200);
+        res.send(metadata);
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500);
+        res.send({ error: "Server Error" });
+      });
+  } else {
+    if (url.startsWith("https://stackoverflow.com/jobs/")) {
+      puppeteer
+        .launch({ args: ["--no-sandbox"] })
+        .then(browser => browser.newPage())
+        .then(page => page.goto(url).then(_ => page.content()))
+        .then(html => {
+          metadata = parseStackOverflow(html);
+
+          res.status(200);
+          res.send(metadata);
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500);
+          res.send({ error: "Server Error" });
+        });
+    }
+  }
 };
 
 module.exports = { parseJobInfo };

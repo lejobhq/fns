@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
 
 const parseStackOverflow = require("./parsers/stackoverflow");
+const parseAngelList = require("./parsers/angel");
 
 const parseJobInfo = (req, res) => {
   // CORS
@@ -30,6 +31,8 @@ const parseJobInfo = (req, res) => {
     .then(html => {
       if (url.startsWith("https://stackoverflow.com/jobs/")) {
         metadata = parseStackOverflow(html);
+      } else if (url.startsWith("https://angel.co/")) {
+        metadata = parseAngelList(html);
       }
       res.status(200);
       res.send(metadata);

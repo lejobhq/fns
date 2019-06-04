@@ -27,7 +27,7 @@ function parseAngelList(html) {
     .split(",")
     .map(e => e.trim());
   const compensation = $(".job-listing-metadata .s-vgBottom2")
-    .eq(0)
+    .eq(1)
     .text()
     .replace(/\n/g, " ");
 

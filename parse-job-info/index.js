@@ -57,6 +57,10 @@ const parseJobInfo = (req, res) => {
           res.send({ error: "Server Error" });
         });
     }
+
+    // Default
+    res.status(200);
+    res.send(metadata);
   }
 };
 

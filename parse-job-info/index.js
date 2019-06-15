@@ -1,5 +1,5 @@
 const cloudscraper = require("cloudscraper");
-const puppeteer = require("puppeteer");
+const request = require("request");
 
 const parseStackOverflow = require("./parsers/stackoverflow");
 const parseAngelList = require("./parsers/angel");
@@ -41,21 +41,21 @@ const parseJobInfo = (req, res) => {
       });
   } else {
     if (url.startsWith("https://stackoverflow.com/jobs/")) {
-      puppeteer
-        .launch({ args: ["--no-sandbox"] })
-        .then(browser => browser.newPage())
-        .then(page => page.goto(url).then(_ => page.content()))
-        .then(html => {
-          metadata = parseStackOverflow(html);
-
-          res.status(200);
-          res.send(metadata);
-        })
-        .catch(err => {
+      request(url, (err, res, body) => {
+        if (err) {
           console.error(err);
           res.status(500);
           res.send({ error: "Server Error" });
-        });
+          return;
+        }
+
+        if (body) {
+          metadata = parseStackOverflow(body);
+        }
+
+        res.status(200);
+        res.send(metadata);
+      });
     }
 
     // Default

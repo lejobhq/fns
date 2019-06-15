@@ -41,7 +41,7 @@ const parseJobInfo = (req, res) => {
       });
   } else {
     if (url.startsWith("https://stackoverflow.com/jobs/")) {
-      request(url, (err, res, body) => {
+      request(url, (err, _, body) => {
         if (err) {
           console.error(err);
           res.status(500);

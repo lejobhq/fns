@@ -56,11 +56,11 @@ const parseJobInfo = (req, res) => {
         res.status(200);
         res.send(metadata);
       });
+    } else {
+      // Default
+      res.status(200);
+      res.send(metadata);
     }
-
-    // Default
-    res.status(200);
-    res.send(metadata);
   }
 };
 
